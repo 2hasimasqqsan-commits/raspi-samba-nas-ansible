@@ -19,23 +19,9 @@ This project demonstrates:
 
 ## Architecture
 
-```text
-Windows / Ubuntu / iPhone
-        |
-        | SMB / CIFS
-        |
-   Tailscale VPN
-        |
-        | 100.x.x.x
-        |
-Raspberry Pi 4
-Ubuntu Server
-Samba
-        |
-        | /srv/samba/share
-        |
-External SSD
-```
+Network and service architecture of the Raspberry Pi Samba NAS with Tailscale remote access.
+
+![Architecture](docs/images/architecture.png)
 
 LAN access example:
 
@@ -57,12 +43,6 @@ smb://100.x.x.x/NAS
 Raspberry Pi 4 with external SSD, cooling case, Ethernet connection, and USB power.
 
 ![Raspberry Pi hardware](docs/images/raspi-hardware.png)
-
-### Architecture
-
-Network and service architecture of the Raspberry Pi Samba NAS with Tailscale remote access.
-
-![Architecture](docs/images/architecture.png)
 
 ### SSD Mounted as Samba Share
 
