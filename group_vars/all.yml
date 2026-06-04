@@ -1,0 +1,13 @@
+---
+# Samba settings
+samba_workgroup: "WORKGROUP"
+samba_share_name: "NAS"
+samba_share_path: "/srv/samba/share"
+samba_valid_user: "ansible"
+
+# Tailscale settings
+# For public repository, keep auth key empty.
+# Run `sudo tailscale up` manually, or use Ansible Vault in private environments.
+tailscale_enable: true
+tailscale_authkey: ""
+tailscale_args: "--ssh=false"

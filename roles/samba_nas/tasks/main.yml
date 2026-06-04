@@ -1,0 +1,36 @@
+---
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Install Samba packages
+  ansible.builtin.apt:
+    name:
+      - samba
+      - samba-common-bin
+    state: present
+
+- name: Ensure Samba share directory exists
+  ansible.builtin.file:
+    path: "{{ samba_share_path }}"
+    state: directory
+    owner: "{{ samba_valid_user }}"
+    group: "{{ samba_valid_user }}"
+    mode: "0775"
+
+- name: Deploy Samba configuration
+  ansible.builtin.template:
+    src: smb.conf.j2
+    dest: /etc/samba/smb.conf
+    owner: root
+    group: root
+    mode: "0644"
+    backup: true
+  notify: Restart Samba
+
+- name: Ensure smbd is enabled and running
+  ansible.builtin.service:
+    name: smbd
+    state: started
+    enabled: true

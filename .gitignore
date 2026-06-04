@@ -1,0 +1,27 @@
+# Ansible
+*.retry
+.vault_pass
+vault.yml
+group_vars/vault.yml
+host_vars/*/vault.yml
+
+# Secrets / keys
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.csr
+*.env
+.env
+
+# Logs / temp
+*.log
+tmp/
+.cache/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

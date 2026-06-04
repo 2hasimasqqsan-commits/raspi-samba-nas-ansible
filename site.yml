@@ -1,0 +1,9 @@
+---
+- name: Configure Raspberry Pi Samba NAS
+  hosts: nas
+  become: true
+
+  roles:
+    - samba_nas
+    - tailscale
+  

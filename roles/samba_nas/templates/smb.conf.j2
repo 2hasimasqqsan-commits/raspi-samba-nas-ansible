@@ -1,0 +1,56 @@
+[global]
+   workgroup = {{ samba_workgroup }}
+   server string = Raspberry Pi Samba NAS
+   security = user
+   map to guest = never
+
+   log file = /var/log/samba/log.%m
+   max log size = 1000
+   logging = file
+
+   server role = standalone server
+   obey pam restrictions = yes
+
+   unix password sync = yes
+   passwd program = /usr/bin/passwd %u
+   passwd chat = *Enter\snew\s*\spassword:* %n\n *Retype\snew\s*\spassword:* %n\n *password\supdated\ssuccessfully* .
+
+   pam password change = yes
+
+[{{ samba_share_name }}]
+   path = {{ samba_share_path }}
+   browseable = yes
+   writable = yes
+   guest ok = no
+   read only = no
+
+   valid users = {{ samba_valid_user }}
+   write list = {{ samba_valid_user }}
+
+   force user = {{ samba_valid_user }}
+   force group = {{ samba_valid_user }}
+
+   create mask = 0664
+   directory mask = 0775
+   force create mode = 0664
+   force directory mode = 0775
+
+   inherit permissions = yes
+
+[NAS2]
+   path = {{ samba_share_path }}
+   browseable = yes
+   writable = yes
+   guest ok = no
+   read only = no
+
+   valid users = {{ samba_valid_user }}
+   write list = {{ samba_valid_user }}
+
+   force user = {{ samba_valid_user }}
+   force group = {{ samba_valid_user }}
+
+   create mask = 0664
+   directory mask = 0775
+   force create mode = 0664
+   force directory mode = 0775

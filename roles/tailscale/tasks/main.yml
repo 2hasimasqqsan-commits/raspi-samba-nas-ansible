@@ -1,0 +1,75 @@
+---
+- name: Install prerequisites for Tailscale repository
+  ansible.builtin.apt:
+    name:
+      - curl
+      - gnupg
+      - ca-certificates
+    state: present
+    update_cache: true
+
+- name: Add Tailscale GPG key
+  ansible.builtin.get_url:
+    url: "https://pkgs.tailscale.com/stable/ubuntu/noble.noarmor.gpg"
+    dest: /usr/share/keyrings/tailscale-archive-keyring.gpg
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Add Tailscale apt repository
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list.d/tailscale.list
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/ubuntu noble main
+
+- name: Install Tailscale
+  ansible.builtin.apt:
+    name: tailscale
+    state: present
+    update_cache: true
+
+- name: Ensure tailscaled is enabled and running
+  ansible.builtin.service:
+    name: tailscaled
+    state: started
+    enabled: true
+
+- name: Check Tailscale status
+  ansible.builtin.command: tailscale status --json
+  register: tailscale_status
+  changed_when: false
+  failed_when: false
+
+- name: Bring up Tailscale with auth key when provided
+  ansible.builtin.command: >
+    tailscale up
+    --auth-key={{ tailscale_authkey }}
+    {{ tailscale_args }}
+  when:
+    - tailscale_authkey is defined
+    - tailscale_authkey | length > 0
+    - tailscale_status.rc != 0 or '"BackendState":"Running"' not in tailscale_status.stdout
+  no_log: true
+
+- name: Show manual authentication command when auth key is not provided
+  ansible.builtin.debug:
+    msg:
+      - "Tailscale is installed."
+      - "Run this manually on raspi-nas:"
+      - "sudo tailscale up {{ tailscale_args }}"
+      - "Then check: tailscale ip -4"
+  when:
+    - tailscale_authkey is not defined or tailscale_authkey | length == 0
+
+- name: Get Tailscale IPv4 address
+  ansible.builtin.command: tailscale ip -4
+  register: tailscale_ipv4
+  changed_when: false
+  failed_when: false
+
+- name: Display Tailscale IPv4 address
+  ansible.builtin.debug:
+    msg: "Tailscale IPv4: {{ tailscale_ipv4.stdout | default('not authenticated yet') }}"
