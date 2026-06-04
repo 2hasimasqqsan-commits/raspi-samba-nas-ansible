@@ -50,15 +50,7 @@ Tailscale access example:
 smb://100.x.x.x/NAS
 ```
 
-cd ~/raspi-samba-nas-ansible_pub
-
-python3 - <<'PY'
-from pathlib import Path
-
-readme = Path("README.md")
-text = readme.read_text()
-
-section = """## Screenshots
+## Screenshots
 
 ### Hardware Setup
 
@@ -86,13 +78,6 @@ Ansible playbook execution result showing successful role-based configuration.
 
 """
 
-marker = "## Tested Environment"
-
-if "## Screenshots" not in text:
-    text = text.replace(marker, section + marker)
-
-readme.write_text(text)
-PY
 
 ## Tested Environment
 
