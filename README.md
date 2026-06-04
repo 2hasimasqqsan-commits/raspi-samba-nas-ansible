@@ -42,7 +42,7 @@ smb://100.x.x.x/NAS
 
 Raspberry Pi 4 with external SSD, cooling case, Ethernet connection, and USB power.
 
-![Raspberry Pi hardware](docs/images/raspi-hardware.png)
+<img src="docs/images/raspi-hardware.png" alt="Raspberry Pi hardware" width="550">
 
 ### SSD Mounted as Samba Share
 
@@ -56,7 +56,6 @@ Ansible playbook execution result showing successful role-based configuration.
 
 ![Ansible playbook result](docs/images/ansible-playbook-results.png)
 
-"""
 
 
 ## Tested Environment
